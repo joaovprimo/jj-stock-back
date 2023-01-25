@@ -1,9 +1,8 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const userRoute = (0, express_1.Router)();
-userRoute.get('/auth', (req, res) => {
-    res.send("oi");
-});
-exports.default = userRoute;
+import { Router } from "express";
+import { loginUser, signUpUser } from "../../controllers/userControllers/userContollers.js";
+import { signUpMiddleware } from "../../middleware/userMiddleware/userMiddleware.js";
+const userRoute = Router();
+userRoute.post('/signup', signUpMiddleware, signUpUser);
+userRoute.get('/login', loginUser);
+export default userRoute;
 //# sourceMappingURL=userRoutes.js.map

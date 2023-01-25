@@ -42,6 +42,7 @@ model products {
   sizeId       Int
   providerId   Int
   fiscalNoteId Int
+  stockId      Int
   quantity     Int
   description  String
   minimun      Int
@@ -53,6 +54,7 @@ model products {
   fiscalNote   fiscalNote @relation(fields: [fiscalNoteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   provider     provider   @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   size         size       @relation(fields: [sizeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  stock        stock      @relation(fields: [stockId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sell         sell[]
 }
 
@@ -85,22 +87,22 @@ model size {
   products  products[]
 }
 
+model stock {
+  id        Int        @id @default(autoincrement())
+  storesId  Int
+  createdAt DateTime   @default(now()) @db.Timestamp(6)
+  updatedAt DateTime   @default(now()) @db.Timestamp(6)
+  products  products[]
+  stores    stores     @relation(fields: [storesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
 model stores {
   id        Int      @id @default(autoincrement())
   name      String   @unique
-  cnpj      Int      @unique
-  createdAt DateTime @default(now()) @db.Timestamp(6)
-  updatedAt DateTime @default(now()) @db.Timestamp(6)
-  users     users[]
-}
-
-model users {
-  id        Int      @id @default(autoincrement())
-  name      String
+  cnpj      String      @unique
+  email     String   @unique
   password  String
-  email     String
-  storesId  Int
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @default(now()) @db.Timestamp(6)
-  stores    stores   @relation(fields: [storesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  stock     stock[]
 }

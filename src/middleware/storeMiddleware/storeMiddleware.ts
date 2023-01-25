@@ -1,23 +1,22 @@
-import { userSchema } from "../../schemas/userSchema/userSchema";
+import { storeSchema } from "../../schemas/storeSchema/storeSchema.js";
 import { Request, Response, NextFunction } from "express";
 
 function signUpMiddleware (req:Request, res:Response, next:NextFunction){
-    const { name, email, password, storesId } = req.body;
-    console.log(name)
-    const validation = userSchema.validate({
+    let { name, email, password, cnpj } = req.body;
+    const validation = storeSchema.validate({
       name,
       password,
       email,
-      storesId
+      cnpj
     }, 
     { abortEarly: false });
 
     if(validation.error){
         const errors = validation.error.details.map(det=>det.message);
         return res.status(400).send(errors);
-    }
+    };
 
-    res.locals.signup = { name, email, password, storesId };
+    res.locals.singUp = { name, email, password, cnpj }
     next();
     
 };

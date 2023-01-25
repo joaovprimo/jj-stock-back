@@ -40,6 +40,7 @@ CREATE TABLE "products" (
     "sizeId" INTEGER NOT NULL,
     "providerId" INTEGER NOT NULL,
     "fiscalNoteId" INTEGER NOT NULL,
+    "stockId" INTEGER NOT NULL,
     "quantity" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
     "minimun" INTEGER NOT NULL,
@@ -86,27 +87,26 @@ CREATE TABLE "size" (
 );
 
 -- CreateTable
-CREATE TABLE "stores" (
+CREATE TABLE "stock" (
     "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "cnpj" INTEGER NOT NULL,
-    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-
-    CONSTRAINT "stores_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "users" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
-    "email" TEXT NOT NULL,
     "storesId" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
-    CONSTRAINT "users_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "stock_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "stores" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "cnpj" INTEGER NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "stores_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -133,6 +133,9 @@ CREATE UNIQUE INDEX "stores_name_key" ON "stores"("name");
 -- CreateIndex
 CREATE UNIQUE INDEX "stores_cnpj_key" ON "stores"("cnpj");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "stores_email_key" ON "stores"("email");
+
 -- AddForeignKey
 ALTER TABLE "entry" ADD CONSTRAINT "entry_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
@@ -149,7 +152,10 @@ ALTER TABLE "products" ADD CONSTRAINT "products_providerId_fkey" FOREIGN KEY ("p
 ALTER TABLE "products" ADD CONSTRAINT "products_sizeId_fkey" FOREIGN KEY ("sizeId") REFERENCES "size"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
+ALTER TABLE "products" ADD CONSTRAINT "products_stockId_fkey" FOREIGN KEY ("stockId") REFERENCES "stock"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
 ALTER TABLE "sell" ADD CONSTRAINT "sell_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "users" ADD CONSTRAINT "users_storesId_fkey" FOREIGN KEY ("storesId") REFERENCES "stores"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "stock" ADD CONSTRAINT "stock_storesId_fkey" FOREIGN KEY ("storesId") REFERENCES "stores"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
