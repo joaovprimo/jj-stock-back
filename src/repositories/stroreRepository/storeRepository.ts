@@ -1,22 +1,33 @@
-import prisma from "../../config/database.js";
+import prisma from '../../config/database.js';
 import { Prisma } from '@prisma/client';
 
 async function findStore (cnpj: string) {
     console.log(cnpj)
-   const store = await prisma.stores.findFirst({
+   /*const store = await prisma.stores.findFirst({
     where: {
         cnpj
     },
-   });
-   console.log(store)
+   });*/
+   const store = prisma.stores.findFirst({
+    where:{
+      cnpj
+    }
+   })
    return store;
 }
 
 async function createStore( data:Prisma.storesCreateInput) {
+  /*return prisma.stores.create({
+    data
+  })     */
   return prisma.stores.create({
     data
-  })     
-    
+  }) 
 };
 
-export { findStore, createStore };
+const functionRepositoryStore = {
+  findStore, 
+  createStore 
+}
+
+export default functionRepositoryStore;

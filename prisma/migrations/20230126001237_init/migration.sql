@@ -77,6 +77,17 @@ CREATE TABLE "sell" (
 );
 
 -- CreateTable
+CREATE TABLE "sessions" (
+    "id" SERIAL NOT NULL,
+    "storesId" INTEGER NOT NULL,
+    "token" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "sessions_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "size" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -100,7 +111,7 @@ CREATE TABLE "stock" (
 CREATE TABLE "stores" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "cnpj" INTEGER NOT NULL,
+    "cnpj" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "createdAt" TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -156,6 +167,9 @@ ALTER TABLE "products" ADD CONSTRAINT "products_stockId_fkey" FOREIGN KEY ("stoc
 
 -- AddForeignKey
 ALTER TABLE "sell" ADD CONSTRAINT "sell_productId_fkey" FOREIGN KEY ("productId") REFERENCES "products"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- AddForeignKey
+ALTER TABLE "sessions" ADD CONSTRAINT "sessions_storesId_fkey" FOREIGN KEY ("storesId") REFERENCES "stores"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 -- AddForeignKey
 ALTER TABLE "stock" ADD CONSTRAINT "stock_storesId_fkey" FOREIGN KEY ("storesId") REFERENCES "stores"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;

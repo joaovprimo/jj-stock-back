@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,23 +7,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.signUpService = void 0;
-const bcrypt_1 = __importDefault(require("bcrypt"));
-const storeRepository_js_1 = require("../../repositories/stroreRepository/storeRepository.js");
-const not_foud_error_js_1 = require("../../errors/not-foud-error.js");
+import bcrypt from 'bcrypt';
+import { v4 as uuid } from 'uuid';
+import functionRepositoryStore from '../../repositories/stroreRepository/storeRepository.js';
+import functionsRepositorySession from '../../repositories/sessionRepository/sessionRepository.js';
+import { badRequestError } from '../../errors/bad-request-error.js';
+import { invalidCredentialsError } from '../../errors/invalid-credentials-error.js';
 function signUpService(name, password, email, cnpj) {
     return __awaiter(this, void 0, void 0, function* () {
-        const hashpassword = bcrypt_1.default.hashSync(password, 12);
-        const store = yield (0, storeRepository_js_1.findStore)(cnpj);
-        console.log(store);
+        const hashpassword = bcrypt.hashSync(password, 12);
+        const store = yield functionRepositoryStore.findStore(cnpj);
         if (store) {
-            throw (0, not_foud_error_js_1.notFoundError)();
+            throw badRequestError();
         }
-        const user = yield (0, storeRepository_js_1.createStore)({
+        const user = yield functionRepositoryStore.createStore({
             name,
             email,
             password: hashpassword,
@@ -33,5 +29,40 @@ function signUpService(name, password, email, cnpj) {
         return user;
     });
 }
-exports.signUpService = signUpService;
+function loginStore(cnpj, password) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const store = yield functionRepositoryStore.findStore(cnpj);
+        const passStore = store.password;
+        const storeId = store.id;
+        yield verifyPassword(password, passStore);
+        const token = yield createSession(storeId);
+        return {
+            store: store.id,
+            token,
+        };
+    });
+}
+function verifyPassword(password, passStore) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const isValidPass = yield bcrypt.compare(password, passStore);
+        if (!isValidPass)
+            throw invalidCredentialsError();
+    });
+}
+function createSession(storeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const token = uuid();
+        const data = {
+            token,
+            storesId: storeId
+        };
+        yield functionsRepositorySession.createSession(data);
+        return token;
+    });
+}
+const functionsServiceStore = {
+    signUpService,
+    loginStore
+};
+export default functionsServiceStore;
 //# sourceMappingURL=storeServices.js.map

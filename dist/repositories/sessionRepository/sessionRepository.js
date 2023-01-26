@@ -8,36 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import prisma from '../../config/database.js';
-function findStore(cnpj) {
+function createSession(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(cnpj);
-        /*const store = await prisma.stores.findFirst({
-         where: {
-             cnpj
-         },
-        });*/
-        const store = prisma.stores.findFirst({
-            where: {
-                cnpj
-            }
-        });
-        return store;
-    });
-}
-function createStore(data) {
-    return __awaiter(this, void 0, void 0, function* () {
-        /*return prisma.stores.create({
-          data
-        })     */
-        return prisma.stores.create({
-            data
+        return prisma.sessions.create({
+            data,
         });
     });
 }
 ;
-const functionRepositoryStore = {
-    findStore,
-    createStore
+const functionsRepositorySession = {
+    createSession
 };
-export default functionRepositoryStore;
-//# sourceMappingURL=storeRepository.js.map
+export default functionsRepositorySession;
+//# sourceMappingURL=sessionRepository.js.map

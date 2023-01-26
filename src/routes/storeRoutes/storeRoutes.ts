@@ -5,7 +5,7 @@ import { signUpMiddleware } from "../../middleware/storeMiddleware/storeMiddlewa
 const storeRoute = Router();
 
 storeRoute.post('/signup', signUpMiddleware ,signUpStore);
-storeRoute.get('/login', loginStore );
+storeRoute.post('/login', loginStore );
 
 
 export default storeRoute;
