@@ -7,8 +7,26 @@ async function createSession ( data: Prisma.sessionsCreateManyInput ){
     })
 };
 
+async function findSession(storeId: number) {
+    return prisma.sessions.findFirst({
+        where:{
+            storesId: storeId
+        }
+    })
+};
+
+async function deleteSession(id: number){
+    return prisma.sessions.delete({
+        where:{
+            id
+        }
+    });
+}
+
 const functionsRepositorySession = {
-    createSession
+    createSession,
+    findSession,
+    deleteSession
 };
 
 export default functionsRepositorySession;

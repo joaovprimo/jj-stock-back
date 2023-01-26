@@ -25,10 +25,14 @@ async function loginStore ( cnpj: string, password: string ) {
   const passStore = store.password;
   const storeId = store.id;
   await verifyPassword( password, passStore );
+  const session = await functionsRepositorySession.findSession(storeId);
+  if(session){
+    await functionsRepositorySession.deleteSession(session.id);
+  }
   const token = await createSession( storeId );
 
   return {
-    store: store.id, 
+    store: store.name, 
     token,
   }
 }
