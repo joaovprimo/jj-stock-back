@@ -24,6 +24,9 @@ async function loginStore ( cnpj: string, password: string ) {
   const store = await functionRepositoryStore.findStore(cnpj);
   const passStore = store.password;
   const storeId = store.id;
+  const storeName = store.name;
+  const storeEmail = store.email;
+  const storeCnpj = store.cnpj;
   await verifyPassword( password, passStore );
   const session = await functionsRepositorySession.findSession(storeId);
   if(session){
@@ -32,7 +35,11 @@ async function loginStore ( cnpj: string, password: string ) {
   const token = await createSession( storeId );
 
   return {
-    store: store.name, 
+    store: {
+      name:storeName,
+      email:storeEmail,
+      cnpj:storeCnpj
+    }, 
     token,
   }
 }

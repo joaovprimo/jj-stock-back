@@ -16,8 +16,29 @@ function createSession(data) {
     });
 }
 ;
+function findSession(storeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.sessions.findFirst({
+            where: {
+                storesId: storeId
+            }
+        });
+    });
+}
+;
+function deleteSession(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.sessions.delete({
+            where: {
+                id
+            }
+        });
+    });
+}
 const functionsRepositorySession = {
-    createSession
+    createSession,
+    findSession,
+    deleteSession
 };
 export default functionsRepositorySession;
 //# sourceMappingURL=sessionRepository.js.map

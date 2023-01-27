@@ -62,6 +62,7 @@ model provider {
   id        Int        @id @default(autoincrement())
   name      String
   cnpj      Int        @unique
+  email     String     @unique
   createdAt DateTime   @default(now()) @db.Timestamp(6)
   updatedAt DateTime   @default(now()) @db.Timestamp(6)
   products  products[]

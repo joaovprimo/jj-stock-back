@@ -35,9 +35,13 @@ function loginStore(cnpj, password) {
         const passStore = store.password;
         const storeId = store.id;
         yield verifyPassword(password, passStore);
+        const session = yield functionsRepositorySession.findSession(storeId);
+        if (session) {
+            yield functionsRepositorySession.deleteSession(session.id);
+        }
         const token = yield createSession(storeId);
         return {
-            store: store.id,
+            store: store.name,
             token,
         };
     });
