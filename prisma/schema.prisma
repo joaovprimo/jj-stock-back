@@ -7,14 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model color {
-  id        Int        @id @default(autoincrement())
-  name      String     @unique
-  createdAt DateTime   @default(now()) @db.Timestamp(6)
-  updatedAt DateTime   @default(now()) @db.Timestamp(6)
-  products  products[]
-}
-
 model entry {
   id        Int      @id @default(autoincrement())
   number    Int      @default(autoincrement())
@@ -46,11 +38,10 @@ model products {
   quantity     Int
   description  String
   minimun      Int
-  colorId      Int
+  color        String
   createdAt    DateTime   @default(now()) @db.Timestamp(6)
   updatedAt    DateTime   @default(now()) @db.Timestamp(6)
   entry        entry[]
-  color        color      @relation(fields: [colorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   fiscalNote   fiscalNote @relation(fields: [fiscalNoteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   provider     provider   @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   size         size       @relation(fields: [sizeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -61,7 +52,7 @@ model products {
 model provider {
   id        Int        @id @default(autoincrement())
   name      String
-  cnpj      Int        @unique
+  cnpj      String        @unique
   email     String     @unique
   createdAt DateTime   @default(now()) @db.Timestamp(6)
   updatedAt DateTime   @default(now()) @db.Timestamp(6)

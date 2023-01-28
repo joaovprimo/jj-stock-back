@@ -34,6 +34,9 @@ function loginStore(cnpj, password) {
         const store = yield functionRepositoryStore.findStore(cnpj);
         const passStore = store.password;
         const storeId = store.id;
+        const storeName = store.name;
+        const storeEmail = store.email;
+        const storeCnpj = store.cnpj;
         yield verifyPassword(password, passStore);
         const session = yield functionsRepositorySession.findSession(storeId);
         if (session) {
@@ -41,7 +44,11 @@ function loginStore(cnpj, password) {
         }
         const token = yield createSession(storeId);
         return {
-            store: store.name,
+            store: {
+                name: storeName,
+                email: storeEmail,
+                cnpj: storeCnpj
+            },
             token,
         };
     });
