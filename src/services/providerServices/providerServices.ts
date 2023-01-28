@@ -1,5 +1,6 @@
 import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
-import { notFoundError } from "../../errors/not-foud-error.js";
+import { notFoundError, } from "../../errors/not-foud-error.js";
+import { badRequestError } from "../../errors/bad-request-error.js";
 
 async function getProvidersServices(){
     const providers = await providersRepositories.findProviders();
@@ -19,10 +20,24 @@ async function getProvidersServicesbyCnpj(cnpj:string){
     return provider;
 }
 
+async function createProvider(name:string, cnpj:string, email:string) {
+    const provider = await providersRepositories.create({ name, cnpj, email });
+    if(!provider) throw badRequestError();
+    return provider;
+}
+
+async function deleteProvider(id:number){
+    const provider = await providersRepositories.deleteProv(id);
+    if(!provider) throw badRequestError();
+    return provider;
+}
+
 const providerServices = {
     getProvidersServices,
     getProvidersServicesbyName,
-    getProvidersServicesbyCnpj
+    getProvidersServicesbyCnpj,
+    createProvider,
+    deleteProvider
 };
 
 export default providerServices;

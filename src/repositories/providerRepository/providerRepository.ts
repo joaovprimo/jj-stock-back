@@ -22,10 +22,26 @@ async function findProviderbyCnpj(data : string){
      
 }
 
+async function create(data:Prisma.providerCreateInput) {
+    return prisma.provider.create({
+        data
+    })
+};
+
+async function deleteProv(providerId:number){
+        return prisma.provider.delete({
+            where:{
+                id: providerId
+            }
+        })
+}
+
 const providersRepositories =  {
     findProviders,
     findProviderbyName,
-    findProviderbyCnpj
+    findProviderbyCnpj,
+    create,
+    deleteProv
 }
 
 export default providersRepositories;
