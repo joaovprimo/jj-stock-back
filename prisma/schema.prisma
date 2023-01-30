@@ -19,9 +19,9 @@ model entry {
 
 model fiscalNote {
   id          Int        @id @default(autoincrement())
-  number      Int        @unique
-  providerId  Int        @unique
-  receiveDate DateTime   @db.Date
+  number      Int        
+  providerId  Int        
+  receiveDate String     
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   updatedAt   DateTime   @default(now()) @db.Timestamp(6)
   products    products[]
@@ -63,7 +63,7 @@ model sell {
   id        Int      @id @default(autoincrement())
   number    Int      @default(autoincrement())
   productId Int      @default(autoincrement())
-  date      DateTime @db.Date
+  date      String
   quantity  Int
   value     Int?
   createdAt DateTime @default(now()) @db.Timestamp(6)
