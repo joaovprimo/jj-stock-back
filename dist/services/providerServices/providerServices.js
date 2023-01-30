@@ -8,7 +8,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
-import { notFoundError } from "../../errors/not-foud-error.js";
+import { notFoundError, } from "../../errors/not-foud-error.js";
+import { badRequestError } from "../../errors/bad-request-error.js";
 function getProvidersServices() {
     return __awaiter(this, void 0, void 0, function* () {
         const providers = yield providersRepositories.findProviders();
@@ -34,10 +35,28 @@ function getProvidersServicesbyCnpj(cnpj) {
         return provider;
     });
 }
+function createProvider(name, cnpj, email) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const provider = yield providersRepositories.create({ name, cnpj, email });
+        if (!provider)
+            throw badRequestError();
+        return provider;
+    });
+}
+function deleteProvider(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const provider = yield providersRepositories.deleteProv(id);
+        if (!provider)
+            throw badRequestError();
+        return provider;
+    });
+}
 const providerServices = {
     getProvidersServices,
     getProvidersServicesbyName,
-    getProvidersServicesbyCnpj
+    getProvidersServicesbyCnpj,
+    createProvider,
+    deleteProvider
 };
 export default providerServices;
 //# sourceMappingURL=providerServices.js.map

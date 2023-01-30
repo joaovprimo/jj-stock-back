@@ -26,16 +26,17 @@ function getProviders(req, res) {
 function getProvidersbyName(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         let { name, cnpj } = req.query;
-        console.log(cnpj);
         let provider;
         try {
             if (name) {
                 name = name.toString();
                 provider = yield providerServices.getProvidersServicesbyName(name);
+                return res.status(httpStatus.OK).send([provider]);
             }
             else {
                 cnpj = cnpj.toString();
                 provider = yield providerServices.getProvidersServicesbyCnpj(cnpj);
+                return res.status(httpStatus.OK).send([provider]);
             }
         }
         catch (error) {
@@ -46,5 +47,39 @@ function getProvidersbyName(req, res) {
         }
     });
 }
-export { getProviders, getProvidersbyName };
+function postProvider(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { name, cnpj, email } = res.locals.provider;
+        try {
+            yield providerServices.createProvider(name, cnpj, email);
+            const providers = yield providerServices.getProvidersServices();
+            return res.status(httpStatus.CREATED).send(providers);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+function deleteProvider(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.params;
+        console.log(id);
+        const storeId = Number(id);
+        try {
+            yield providerServices.deleteProvider(storeId);
+            const providers = yield providerServices.getProvidersServices();
+            return res.status(httpStatus.OK).send(providers);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+export { getProviders, getProvidersbyName, postProvider, deleteProvider };
 //# sourceMappingURL=providerControllers.js.map

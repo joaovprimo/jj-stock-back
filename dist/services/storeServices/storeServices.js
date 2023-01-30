@@ -13,6 +13,7 @@ import functionRepositoryStore from '../../repositories/stroreRepository/storeRe
 import functionsRepositorySession from '../../repositories/sessionRepository/sessionRepository.js';
 import { badRequestError } from '../../errors/bad-request-error.js';
 import { invalidCredentialsError } from '../../errors/invalid-credentials-error.js';
+import stockRepositoryObj from "../../repositories/stockRepository/stockRepository.js";
 function signUpService(name, password, email, cnpj) {
     return __awaiter(this, void 0, void 0, function* () {
         const hashpassword = bcrypt.hashSync(password, 12);
@@ -26,6 +27,7 @@ function signUpService(name, password, email, cnpj) {
             password: hashpassword,
             cnpj,
         });
+        yield stockRepositoryObj.createStock(user.id);
         return user;
     });
 }

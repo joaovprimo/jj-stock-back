@@ -24,19 +24,36 @@ function findProviderbyName(data) {
 }
 function findProviderbyCnpj(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cnpj = prisma.provider.findFirst({
+        return prisma.provider.findFirst({
             where: {
                 cnpj: data,
             }
         });
-        console.log(cnpj);
-        return cnpj;
+    });
+}
+function create(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.provider.create({
+            data
+        });
+    });
+}
+;
+function deleteProv(providerId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.provider.delete({
+            where: {
+                id: providerId
+            }
+        });
     });
 }
 const providersRepositories = {
     findProviders,
     findProviderbyName,
-    findProviderbyCnpj
+    findProviderbyCnpj,
+    create,
+    deleteProv
 };
 export default providersRepositories;
 //# sourceMappingURL=providerRepository.js.map
