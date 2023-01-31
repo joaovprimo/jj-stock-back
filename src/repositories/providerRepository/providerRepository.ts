@@ -27,10 +27,10 @@ async function findProviderbyCnpj(data : string){
 }
 
 async function create(data:Prisma.providerCreateManyInput) {
-    console.log(data)
     return prisma.provider.create({
         data
     })
+    
 };
 
 async function deleteProv(providerId:number){

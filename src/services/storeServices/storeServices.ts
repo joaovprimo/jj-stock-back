@@ -41,6 +41,7 @@ async function loginStore ( cnpj: string, password: string ) {
 
   return {
     store: {
+      id:storeId,
       name:storeName,
       email:storeEmail,
       cnpj:storeCnpj,

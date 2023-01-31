@@ -12,19 +12,22 @@ model entry {
   number    Int      @default(autoincrement())
   productId Int
   quantity  Int
+  fiscalNoteId Int?
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @default(now()) @db.Timestamp(6)
+  fiscalNote fiscalNote? @relation(fields: [fiscalNoteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   products  products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model fiscalNote {
   id          Int        @id @default(autoincrement())
-  number      Int        
+  number      String        
   providerId  Int        
   receiveDate String     
   createdAt   DateTime   @default(now()) @db.Timestamp(6)
   updatedAt   DateTime   @default(now()) @db.Timestamp(6)
   products    products[]
+  entry       entry[]
 }
 
 model products {
@@ -32,8 +35,8 @@ model products {
   name         String
   numberRef    Int        @unique
   sizeId       Int
-  providerId   Int
-  fiscalNoteId Int
+  providerId   Int?
+  fiscalNoteId Int?
   stockId      Int
   quantity     Int
   description  String
@@ -42,8 +45,8 @@ model products {
   createdAt    DateTime   @default(now()) @db.Timestamp(6)
   updatedAt    DateTime   @default(now()) @db.Timestamp(6)
   entry        entry[]
-  fiscalNote   fiscalNote @relation(fields: [fiscalNoteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  provider     provider   @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  fiscalNote   fiscalNote? @relation(fields: [fiscalNoteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  provider     provider?   @relation(fields: [providerId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   size         size       @relation(fields: [sizeId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   stock        stock      @relation(fields: [stockId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   sell         sell[]

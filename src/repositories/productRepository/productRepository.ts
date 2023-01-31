@@ -42,6 +42,15 @@ async function findOneProductByName(name:string) {
     })
 };
 
+async function findOneProductByNameandSize(name:string, sizeId:number) {
+    return prisma.products.findFirst({
+        where:{
+           name,
+           sizeId
+        }
+    })
+};
+
 async function create(data: Prisma.productsCreateInput){
     console.log(data);
  const creatind = await prisma.products.create({
@@ -59,12 +68,27 @@ async function deleteProduct(productId: number){
     })
 }
 
+async function updateProduct(productId:number, quantity: number) {
+    return prisma.products.update({
+        where:{
+            id:productId
+        },
+        data:{
+            quantity:{
+                increment:quantity
+            } 
+        }
+    })
+}
+
 const objProductRepositories = {
     findProducts,
     findOneProductById,
     findOneProductByName,
+    findOneProductByNameandSize,
     create,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 }
 
 export default objProductRepositories;

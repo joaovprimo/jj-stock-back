@@ -3,10 +3,11 @@ import providerServices from "../../services/providerServices/providerServices.j
 import httpStatus from "http-status";
 
 async function getProviders(req:Request, res:Response){
-    const { storesId } = req.body;
+    const { storesId } = req.params;
     console.log(storesId);
+    const storeId = Number(storesId);
     try{
-        const providers = await providerServices.getProvidersServices(storesId);
+        const providers = await providerServices.getProvidersServices(storeId);
         res.status(httpStatus.OK).send(providers);
     }catch(error){
         if (error.name === "NotFoundError") {
@@ -39,11 +40,12 @@ async function getProvidersbyName(req:Request, res:Response){
 
 async function postProvider (req:Request, res:Response){
     const { name, cnpj, email } = res.locals.provider;
-    const { storesId } = req.body;
+    const { storesId } = req.params;
     console.log(storesId);
+    const storeId = Number(storesId);
     try{
-        await providerServices.createProvider(name, cnpj, email);
-        const providers = await providerServices.getProvidersServices(storesId);
+        await providerServices.createProvider(name, cnpj, email, storeId);
+        const providers = await providerServices.getProvidersServices(storeId);
         return res.status(httpStatus.CREATED).send(providers)
     }catch(error){
         if (error.name === "NotFoundError") {

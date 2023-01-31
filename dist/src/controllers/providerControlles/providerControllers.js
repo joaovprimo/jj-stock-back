@@ -55,7 +55,7 @@ function postProvider(req, res) {
         const { storesId } = req.body;
         console.log(storesId);
         try {
-            yield providerServices.createProvider(name, cnpj, email);
+            yield providerServices.createProvider(name, cnpj, email, storesId);
             const providers = yield providerServices.getProvidersServices(storesId);
             return res.status(httpStatus.CREATED).send(providers);
         }

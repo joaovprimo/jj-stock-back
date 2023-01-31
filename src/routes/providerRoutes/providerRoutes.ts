@@ -4,7 +4,7 @@ import { providerMiddleware } from "../../middleware/providerMiddleware/provider
 
 const providerRoute = Router();
 
-providerRoute.get("/", getProviders);
+providerRoute.get("/:storesId", getProviders);
 providerRoute.get("/findone", getProvidersbyName);
 providerRoute.post("/", providerMiddleware ,postProvider);
 providerRoute.delete("/:id", deleteProvider);
