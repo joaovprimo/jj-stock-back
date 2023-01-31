@@ -13,8 +13,41 @@ function findProducts() {
         return prisma.products.findMany();
     });
 }
+function findOneProductById(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.findFirst({
+            where: {
+                id,
+            }
+        });
+    });
+}
+;
+function findOneProductByName(name) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.findMany({
+            where: {
+                name
+            }
+        });
+    });
+}
+;
+function create(data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const creatind = prisma.products.create({
+            data
+        });
+        console.log(creatind);
+        return creatind;
+    });
+}
+;
 const objProductRepositories = {
-    findProducts
+    findProducts,
+    findOneProductById,
+    findOneProductByName,
+    create
 };
 export default objProductRepositories;
 //# sourceMappingURL=productRepository.js.map

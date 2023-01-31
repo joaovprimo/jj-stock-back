@@ -8,8 +8,17 @@ async function createStock(storesId : number){
     })
 }
 
+async function findStock(storeId:number){
+    return prisma.stock.findFirst({
+        where:{
+            storesId:storeId
+        }
+    })
+}
+
 const stockRepositoryObj = {
-    createStock
+    createStock,
+    findStock
 }
 
 export default stockRepositoryObj;

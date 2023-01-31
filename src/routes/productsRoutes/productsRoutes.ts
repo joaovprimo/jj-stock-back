@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { getProducts, getProductsById, getProductsByName } from "../../controllers/productControllers/productController.js";
-
+import { getProducts, getProductsById, getProductsByName, createProduct, deleteProduct } from "../../controllers/productControllers/productController.js";
+import { productMiddleware } from "../../middleware/productMiddleware/productMiddleware.js";
 const productsRoute = Router();
 
-productsRoute.get('/',getProducts);
+productsRoute.get('/:stock',getProducts);
 productsRoute.get('/:id', getProductsById);
-productsRoute.get('/name', getProductsByName);
+productsRoute.get('/find', getProductsByName);
+productsRoute.post('/', productMiddleware, createProduct);
+productsRoute.delete('/:id', deleteProduct);
 
 export default productsRoute;

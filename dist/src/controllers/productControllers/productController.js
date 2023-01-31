@@ -13,7 +13,7 @@ function getProducts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const products = yield objProductService.getProductService();
-            return products;
+            return res.status(httpStatus.OK).send(products);
         }
         catch (error) {
             if (error.name === "NotFoundError") {
@@ -23,5 +23,54 @@ function getProducts(req, res) {
         }
     });
 }
-export { getProducts };
+function getProductsById(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.params;
+        try {
+            const productId = Number(id);
+            const product = yield objProductService.getProductByIdService(productId);
+            return res.status(httpStatus.OK).send(product);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+function getProductsByName(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("aqui");
+        const { name } = req.body;
+        console.log(name);
+        try {
+            const product = yield objProductService.getProductByNameService(name);
+            return res.status(httpStatus.OK).send(product);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+function createProduct(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const data = res.locals.product;
+        try {
+            yield objProductService.postProductService(data);
+            const products = yield objProductService.getProductService();
+            return res.status(httpStatus.CREATED).send(products);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+export { getProducts, getProductsById, getProductsByName, createProduct };
 //# sourceMappingURL=productController.js.map

@@ -18,6 +18,7 @@ async function signUpService ( name: string, password: string, email: string, cn
     password: hashpassword,
     cnpj,
   });
+  console.log(user)
   await stockRepositoryObj.createStock(user.id);
   return user;
 }
@@ -29,18 +30,21 @@ async function loginStore ( cnpj: string, password: string ) {
   const storeName = store.name;
   const storeEmail = store.email;
   const storeCnpj = store.cnpj;
+
   await verifyPassword( password, passStore );
   const session = await functionsRepositorySession.findSession(storeId);
   if(session){
     await functionsRepositorySession.deleteSession(session.id);
   }
+  const stock = await stockRepositoryObj.findStock(storeId);
   const token = await createSession( storeId );
 
   return {
     store: {
       name:storeName,
       email:storeEmail,
-      cnpj:storeCnpj
+      cnpj:storeCnpj,
+      stock: stock.id
     }, 
     token,
   }
