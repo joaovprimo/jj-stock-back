@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { badRequestError } from "../../errors/bad-request-error.js";
 import { notFoundError, } from "../../errors/not-foud-error.js";
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
-function getProductService() {
+function getProductService(stockId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const products = yield objProductRepositories.findProducts();
+        const products = yield objProductRepositories.findProducts(stockId);
         return products;
     });
 }
@@ -41,11 +41,20 @@ function postProductService(data) {
         return product;
     });
 }
+function deleteProductService(productId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const product = yield objProductRepositories.deleteProduct(productId);
+        if (!product)
+            throw notFoundError();
+        return product;
+    });
+}
 const objProductService = {
     getProductService,
     getProductByIdService,
     getProductByNameService,
-    postProductService
+    postProductService,
+    deleteProductService,
 };
 export default objProductService;
 //# sourceMappingURL=productServices.js.map

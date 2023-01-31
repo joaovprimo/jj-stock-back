@@ -52,11 +52,13 @@ model products {
 model provider {
   id        Int        @id @default(autoincrement())
   name      String
-  cnpj      String        @unique
+  cnpj      String     @unique
   email     String     @unique
+  storesId  Int?
   createdAt DateTime   @default(now()) @db.Timestamp(6)
   updatedAt DateTime   @default(now()) @db.Timestamp(6)
   products  products[]
+  stores    stores?     @relation(fields: [storesId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model sell {
@@ -107,4 +109,5 @@ model stores {
   updatedAt DateTime   @default(now()) @db.Timestamp(6)
   sessions  sessions[]
   stock     stock[]
+  provider  provider[] 
 }

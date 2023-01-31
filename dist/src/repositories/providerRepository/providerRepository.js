@@ -8,9 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import prisma from '../../config/database.js';
-function findProviders() {
+function findProviders(storeId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.provider.findMany();
+        return prisma.provider.findMany({
+            where: {
+                storesId: storeId
+            }
+        });
     });
 }
 function findProviderbyName(data) {
@@ -33,6 +37,7 @@ function findProviderbyCnpj(data) {
 }
 function create(data) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(data);
         return prisma.provider.create({
             data
         });

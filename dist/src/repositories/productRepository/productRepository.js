@@ -8,9 +8,30 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import prisma from '../../config/database.js';
-function findProducts() {
+function findProducts(stockId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.products.findMany();
+        return prisma.products.findMany({
+            where: {
+                stockId
+            },
+            include: {
+                fiscalNote: {
+                    select: {
+                        number: true
+                    }
+                },
+                provider: {
+                    select: {
+                        name: true
+                    }
+                },
+                size: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
     });
 }
 function findOneProductById(id) {
@@ -35,7 +56,8 @@ function findOneProductByName(name) {
 ;
 function create(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        const creatind = prisma.products.create({
+        console.log(data);
+        const creatind = yield prisma.products.create({
             data
         });
         console.log(creatind);
@@ -43,11 +65,21 @@ function create(data) {
     });
 }
 ;
+function deleteProduct(productId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.delete({
+            where: {
+                id: productId
+            }
+        });
+    });
+}
 const objProductRepositories = {
     findProducts,
     findOneProductById,
     findOneProductByName,
-    create
+    create,
+    deleteProduct
 };
 export default objProductRepositories;
 //# sourceMappingURL=productRepository.js.map

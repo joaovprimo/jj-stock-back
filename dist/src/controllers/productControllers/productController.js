@@ -11,8 +11,11 @@ import httpStatus from "http-status";
 import objProductService from "../../services/productServices/productServices.js";
 function getProducts(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { stock } = req.params;
+        const stockId = Number(stock);
         try {
-            const products = yield objProductService.getProductService();
+            const products = yield objProductService.getProductService(stockId);
+            console.log(products);
             return res.status(httpStatus.OK).send(products);
         }
         catch (error) {
@@ -59,9 +62,10 @@ function getProductsByName(req, res) {
 function createProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const data = res.locals.product;
+        const { stockId } = req.body;
         try {
             yield objProductService.postProductService(data);
-            const products = yield objProductService.getProductService();
+            const products = yield objProductService.getProductService(stockId);
             return res.status(httpStatus.CREATED).send(products);
         }
         catch (error) {
@@ -72,5 +76,23 @@ function createProduct(req, res) {
         }
     });
 }
-export { getProducts, getProductsById, getProductsByName, createProduct };
+function deleteProduct(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id } = req.params;
+        const { stockId } = req.body;
+        try {
+            const productId = Number(id);
+            yield objProductService.deleteProductService(productId);
+            const products = yield objProductService.getProductService(stockId);
+            return res.status(httpStatus.OK).send(products);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
+            }
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
+    });
+}
+export { getProducts, getProductsById, getProductsByName, createProduct, deleteProduct };
 //# sourceMappingURL=productController.js.map

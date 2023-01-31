@@ -27,6 +27,7 @@ function signUpService(name, password, email, cnpj) {
             password: hashpassword,
             cnpj,
         });
+        console.log(user);
         yield stockRepositoryObj.createStock(user.id);
         return user;
     });
@@ -44,12 +45,14 @@ function loginStore(cnpj, password) {
         if (session) {
             yield functionsRepositorySession.deleteSession(session.id);
         }
+        const stock = yield stockRepositoryObj.findStock(storeId);
         const token = yield createSession(storeId);
         return {
             store: {
                 name: storeName,
                 email: storeEmail,
-                cnpj: storeCnpj
+                cnpj: storeCnpj,
+                stock: stock.id
             },
             token,
         };

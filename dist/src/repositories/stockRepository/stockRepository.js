@@ -17,8 +17,18 @@ function createStock(storesId) {
         });
     });
 }
+function findStock(storeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.stock.findFirst({
+            where: {
+                storesId: storeId
+            }
+        });
+    });
+}
 const stockRepositoryObj = {
-    createStock
+    createStock,
+    findStock
 };
 export default stockRepositoryObj;
 //# sourceMappingURL=stockRepository.js.map

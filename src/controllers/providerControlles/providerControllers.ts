@@ -3,8 +3,10 @@ import providerServices from "../../services/providerServices/providerServices.j
 import httpStatus from "http-status";
 
 async function getProviders(req:Request, res:Response){
+    const { storesId } = req.body;
+    console.log(storesId);
     try{
-        const providers = await providerServices.getProvidersServices();
+        const providers = await providerServices.getProvidersServices(storesId);
         res.status(httpStatus.OK).send(providers);
     }catch(error){
         if (error.name === "NotFoundError") {
@@ -37,9 +39,11 @@ async function getProvidersbyName(req:Request, res:Response){
 
 async function postProvider (req:Request, res:Response){
     const { name, cnpj, email } = res.locals.provider;
+    const { storesId } = req.body;
+    console.log(storesId);
     try{
         await providerServices.createProvider(name, cnpj, email);
-        const providers = await providerServices.getProvidersServices();
+        const providers = await providerServices.getProvidersServices(storesId);
         return res.status(httpStatus.CREATED).send(providers)
     }catch(error){
         if (error.name === "NotFoundError") {
@@ -52,11 +56,12 @@ async function postProvider (req:Request, res:Response){
 
 async function deleteProvider(req:Request, res:Response){
     const {id} = req.params;
+    const { storesId } = req.body;
     console.log(id)
-    const storeId = Number(id);
+    const store = Number(id);
     try{
-        await providerServices.deleteProvider(storeId);
-        const providers = await providerServices.getProvidersServices();
+        await providerServices.deleteProvider(store);
+        const providers = await providerServices.getProvidersServices(storesId);
         return res.status(httpStatus.OK).send(providers);
     }catch(error){
         if (error.name === "NotFoundError") {

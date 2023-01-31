@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
 import { notFoundError, } from "../../errors/not-foud-error.js";
 import { badRequestError } from "../../errors/bad-request-error.js";
-function getProvidersServices() {
+function getProvidersServices(storeId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const providers = yield providersRepositories.findProviders();
+        const providers = yield providersRepositories.findProviders(storeId);
         if (!providers)
             throw notFoundError();
         return providers;
@@ -35,9 +35,9 @@ function getProvidersServicesbyCnpj(cnpj) {
         return provider;
     });
 }
-function createProvider(name, cnpj, email) {
+function createProvider(name, cnpj, email, storesId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const provider = yield providersRepositories.create({ name, cnpj, email });
+        const provider = yield providersRepositories.create({ name, cnpj, email, storesId });
         if (!provider)
             throw badRequestError();
         return provider;

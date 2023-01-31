@@ -2,8 +2,8 @@ import providersRepositories from "../../repositories/providerRepository/provide
 import { notFoundError, } from "../../errors/not-foud-error.js";
 import { badRequestError } from "../../errors/bad-request-error.js";
 
-async function getProvidersServices(){
-    const providers = await providersRepositories.findProviders();
+async function getProvidersServices(storeId:number){
+    const providers = await providersRepositories.findProviders(storeId);
     if(!providers) throw notFoundError();
     return providers;
 };
@@ -20,8 +20,8 @@ async function getProvidersServicesbyCnpj(cnpj:string){
     return provider;
 }
 
-async function createProvider(name:string, cnpj:string, email:string) {
-    const provider = await providersRepositories.create({ name, cnpj, email });
+async function createProvider(name:string, cnpj:string, email:string, storesId:number) {
+    const provider = await providersRepositories.create({ name, cnpj, email, storesId });
     if(!provider) throw badRequestError();
     return provider;
 }

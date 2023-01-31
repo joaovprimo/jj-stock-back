@@ -1,8 +1,12 @@
 import prisma from '../../config/database.js';
 import { Prisma } from '@prisma/client';
 
-async function findProviders(){
-    return prisma.provider.findMany();
+async function findProviders(storeId:number){
+    return prisma.provider.findMany({
+       where:{
+        storesId:storeId
+       }
+    });
 }
 
 async function findProviderbyName(data : string){
@@ -22,7 +26,8 @@ async function findProviderbyCnpj(data : string){
      
 }
 
-async function create(data:Prisma.providerCreateInput) {
+async function create(data:Prisma.providerCreateManyInput) {
+    console.log(data)
     return prisma.provider.create({
         data
     })

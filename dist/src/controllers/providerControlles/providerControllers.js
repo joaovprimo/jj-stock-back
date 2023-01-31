@@ -11,8 +11,10 @@ import providerServices from "../../services/providerServices/providerServices.j
 import httpStatus from "http-status";
 function getProviders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const { storesId } = req.body;
+        console.log(storesId);
         try {
-            const providers = yield providerServices.getProvidersServices();
+            const providers = yield providerServices.getProvidersServices(storesId);
             res.status(httpStatus.OK).send(providers);
         }
         catch (error) {
@@ -50,9 +52,11 @@ function getProvidersbyName(req, res) {
 function postProvider(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { name, cnpj, email } = res.locals.provider;
+        const { storesId } = req.body;
+        console.log(storesId);
         try {
             yield providerServices.createProvider(name, cnpj, email);
-            const providers = yield providerServices.getProvidersServices();
+            const providers = yield providerServices.getProvidersServices(storesId);
             return res.status(httpStatus.CREATED).send(providers);
         }
         catch (error) {
@@ -66,11 +70,12 @@ function postProvider(req, res) {
 function deleteProvider(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { id } = req.params;
+        const { storesId } = req.body;
         console.log(id);
-        const storeId = Number(id);
+        const store = Number(id);
         try {
-            yield providerServices.deleteProvider(storeId);
-            const providers = yield providerServices.getProvidersServices();
+            yield providerServices.deleteProvider(store);
+            const providers = yield providerServices.getProvidersServices(storesId);
             return res.status(httpStatus.OK).send(providers);
         }
         catch (error) {
