@@ -6,7 +6,7 @@ const productsRoute = Router();
 productsRoute.get('/:stock',getProducts);
 productsRoute.get('/:id', getProductsById);
 productsRoute.get('/find', getProductsByName);
-productsRoute.post('/', productMiddleware, createProduct);
+productsRoute.post('/:stockId', productMiddleware, createProduct);
 productsRoute.delete('/:id', deleteProduct);
 
 export default productsRoute;

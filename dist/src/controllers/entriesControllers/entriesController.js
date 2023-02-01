@@ -12,8 +12,11 @@ import serviceEntryFunctions from "../../services/entryServices/entryServices.js
 function postEntry(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { name, quantity, fiscalNote, receiveDate, provider, size } = res.locals.entries;
+        const { stockId } = req.params;
+        const stock = Number(stockId);
+        let quant = Number(quantity);
         try {
-            const entry = yield serviceEntryFunctions.entryPostService(name, quantity, fiscalNote, receiveDate, provider, size);
+            const entry = yield serviceEntryFunctions.entryPostService(name, quant, fiscalNote, receiveDate, provider, size, stock);
             return res.status(httpStatus.OK).send(entry);
         }
         catch (error) {

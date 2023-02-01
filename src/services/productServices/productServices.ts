@@ -1,6 +1,8 @@
 import { badRequestError } from "../../errors/bad-request-error.js";
 import { notFoundError, } from "../../errors/not-foud-error.js";
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
+import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
+import sizeRepositoryFunctions from "../../repositories/sizeRepository/sizeRepository.js";
 import { Prisma } from '@prisma/client';
 
 async function getProductService(stockId:number) {
@@ -20,8 +22,15 @@ async function getProductByNameService(name:string){
     return product;
 }
 
-async function postProductService(data: Prisma.productsCreateInput) {
-    const product =  await objProductRepositories.create(data);
+async function postProductService(name: string, numberRef:string, size: string, provider: string, description: string, minimun:number, color:string, stockId: number) {
+    const min = Number(minimun);
+    const provi = await providersRepositories.findProviderbyCnpj(provider);
+    if(!provi) throw badRequestError();
+    const siz =  await sizeRepositoryFunctions.findSize(size.toUpperCase());
+    if(!siz){
+        await sizeRepositoryFunctions.create(size.toUpperCase());
+    }
+    const product =  await objProductRepositories.create(name, numberRef, siz.id, provi.id, description, min, color.toUpperCase(),stockId);
     console.log(product);
     if(!product) throw badRequestError();
     return product;

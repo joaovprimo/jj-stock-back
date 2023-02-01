@@ -9,8 +9,17 @@ async function findSize(size:string) {
     })
 }
 
+async function create(size:string) {
+    return prisma.size.create({
+        data:{
+            name:size
+        }
+    })
+}
+
 const sizeRepositoryFunctions = {
-    findSize
+    findSize,
+    create
 }
 
 export default sizeRepositoryFunctions;

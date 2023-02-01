@@ -33,12 +33,12 @@ model fiscalNote {
 model products {
   id           Int        @id @default(autoincrement())
   name         String
-  numberRef    Int        @unique
+  numberRef    String        @unique
   sizeId       Int
   providerId   Int?
   fiscalNoteId Int?
   stockId      Int
-  quantity     Int
+  quantity     Int?
   description  String
   minimun      Int
   color        String

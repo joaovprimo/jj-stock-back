@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from "express";
 import { productSchema } from "../../schemas/productSchema/productSchema.js";
 
 function productMiddleware (req:Request, res:Response, next:NextFunction){
-    let { name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color } = req.body;
+    let { name, numberRef, size, provider, description, minimun, color } = req.body;
     const validation = productSchema.validate({
-        name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color
+        name, numberRef, size, provider, description, minimun, color
     }, 
     { abortEarly: false });
 
@@ -14,7 +14,7 @@ function productMiddleware (req:Request, res:Response, next:NextFunction){
         return res.status(400).send(errors);
     };
 
-    res.locals.product = { name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color }
+    res.locals.product = { name, numberRef, size, provider, description, minimun, color }
     next();
     
 };

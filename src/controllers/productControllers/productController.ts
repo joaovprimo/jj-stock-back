@@ -47,11 +47,12 @@ async function getProductsByName(req:Request, res:Response){
 }
 
 async function createProduct(req:Request, res:Response) {
-    const data = res.locals.product;
-    const { stockId } = req.body;
+    const {name, numberRef, size, provider, description, minimun, color} = res.locals.product;
+    const { stockId } = req.params;
+    const stockIdd = Number(stockId);
     try{
-        await objProductService.postProductService(data);
-        const products = await objProductService.getProductService(stockId);
+        await objProductService.postProductService(name, numberRef, size, provider, description, minimun, color, stockIdd);
+        const products = await objProductService.getProductService(stockIdd);
         return res.status(httpStatus.CREATED).send(products)
     }catch(error){
         if (error.name === "NotFoundError") {

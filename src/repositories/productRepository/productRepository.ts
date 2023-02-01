@@ -52,10 +52,21 @@ async function findOneProductByNameandSize(name:string, sizeId:number, stock:num
     })
 };
 
-async function create(data: Prisma.productsCreateInput){
- const creatind = await prisma.products.create({
-    data
+async function create(name: string, numberRef:string, sizeId: number, providerId: number, description: string, minimun:number, color:string, stockId: number){
+   console.log(name, numberRef, sizeId, providerId, description, minimun, color, stockId)
+    const creatind = await prisma.products.create({
+    data:{
+        name,
+        numberRef,
+        sizeId,
+        providerId,
+        description,
+        stockId,
+        minimun,
+        color
+    }
  });
+ console.log(creatind)
  return creatind
 };
 

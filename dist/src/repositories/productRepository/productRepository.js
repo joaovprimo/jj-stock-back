@@ -54,12 +54,13 @@ function findOneProductByName(name) {
     });
 }
 ;
-function findOneProductByNameandSize(name, sizeId) {
+function findOneProductByNameandSize(name, sizeId, stock) {
     return __awaiter(this, void 0, void 0, function* () {
         return prisma.products.findFirst({
             where: {
                 name,
-                sizeId
+                sizeId,
+                stockId: stock
             }
         });
     });
@@ -67,11 +68,9 @@ function findOneProductByNameandSize(name, sizeId) {
 ;
 function create(data) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(data);
         const creatind = yield prisma.products.create({
             data
         });
-        console.log(creatind);
         return creatind;
     });
 }
@@ -87,6 +86,7 @@ function deleteProduct(productId) {
 }
 function updateProduct(productId, quantity) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(productId, quantity);
         return prisma.products.update({
             where: {
                 id: productId

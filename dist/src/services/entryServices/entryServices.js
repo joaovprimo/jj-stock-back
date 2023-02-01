@@ -13,17 +13,16 @@ import fiscalNoteRepositoryFunctions from "../../repositories/fiscalNoteReposito
 import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
 import sizeRepositoryFunctions from "../../repositories/sizeRepository/sizeRepository.js";
-function entryPostService(name, quantity, fiscalNote, receiveDate, provider, size) {
+function entryPostService(name, quantity, fiscalNote, receiveDate, provider, size, stock) {
     return __awaiter(this, void 0, void 0, function* () {
         let ficNote;
         const sizee = yield sizeRepositoryFunctions.findSize(size);
         if (!sizee)
             throw badRequestError();
-        const prod = yield objProductRepositories.findOneProductByNameandSize(name, sizee.id);
+        const prod = yield objProductRepositories.findOneProductByNameandSize(name, sizee.id, stock);
         if (!prod)
             throw badRequestError();
         const providerr = yield providersRepositories.findProviderbyCnpj(provider);
-        console.log(providerr);
         if (!providerr)
             throw badRequestError();
         const providerId = providerr.id;
@@ -31,7 +30,7 @@ function entryPostService(name, quantity, fiscalNote, receiveDate, provider, siz
         if (!ficNote) {
             ficNote = yield fiscalNoteRepositoryFunctions.createFiscalNote(fiscalNote, receiveDate, providerId);
         }
-        yield objProductRepositories.updateProduct(prod.id, quantity);
+        const up = yield objProductRepositories.updateProduct(prod.id, quantity);
         const entry = yield entryRepositoryFunctions.createEntry(prod.id, ficNote.id, quantity);
         return entry;
     });
