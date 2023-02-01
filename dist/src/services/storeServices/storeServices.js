@@ -49,6 +49,7 @@ function loginStore(cnpj, password) {
         const token = yield createSession(storeId);
         return {
             store: {
+                id: storeId,
                 name: storeName,
                 email: storeEmail,
                 cnpj: storeCnpj,

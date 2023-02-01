@@ -42,21 +42,20 @@ async function findOneProductByName(name:string) {
     })
 };
 
-async function findOneProductByNameandSize(name:string, sizeId:number) {
+async function findOneProductByNameandSize(name:string, sizeId:number, stock:number) {
     return prisma.products.findFirst({
         where:{
            name,
-           sizeId
+           sizeId,
+           stockId:stock
         }
     })
 };
 
 async function create(data: Prisma.productsCreateInput){
-    console.log(data);
  const creatind = await prisma.products.create({
     data
  });
- console.log(creatind);
  return creatind
 };
 
@@ -69,6 +68,7 @@ async function deleteProduct(productId: number){
 }
 
 async function updateProduct(productId:number, quantity: number) {
+    console.log(productId, quantity)
     return prisma.products.update({
         where:{
             id:productId

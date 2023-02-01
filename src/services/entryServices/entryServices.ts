@@ -6,21 +6,20 @@ import providersRepositories from "../../repositories/providerRepository/provide
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
 import sizeRepositoryFunctions from "../../repositories/sizeRepository/sizeRepository.js";
 
-async function entryPostService(name:string, quantity:number, fiscalNote:string, receiveDate: string, provider: string, size:string) {
+async function entryPostService(name:string, quantity:number, fiscalNote:string, receiveDate: string, provider: string, size:string, stock: number) {
     let ficNote;
-
     const sizee = await sizeRepositoryFunctions.findSize(size);
     if(!sizee) throw badRequestError(); 
-    const prod = await objProductRepositories.findOneProductByNameandSize(name, sizee.id);
-    if(prod) throw badRequestError();
-    const providerr = await providersRepositories.findProviderbyName(provider);
-    if(!provider) throw badRequestError();
+    const prod = await objProductRepositories.findOneProductByNameandSize(name, sizee.id, stock);
+    if(!prod) throw badRequestError();
+    const providerr = await providersRepositories.findProviderbyCnpj(provider);
+    if(!providerr) throw badRequestError();
     const providerId = providerr.id;
     ficNote = await fiscalNoteRepositoryFunctions.getFiscalnotesByNumber(fiscalNote);
     if(!ficNote) {
        ficNote = await fiscalNoteRepositoryFunctions.createFiscalNote(fiscalNote, receiveDate, providerId);
     }
-    await objProductRepositories.updateProduct(prod.id, quantity);
+    const up = await objProductRepositories.updateProduct(prod.id, quantity);
    const entry = await entryRepositoryFunctions.createEntry(prod.id, ficNote.id, quantity);
    return entry;
 }

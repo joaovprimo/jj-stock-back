@@ -54,6 +54,17 @@ function findOneProductByName(name) {
     });
 }
 ;
+function findOneProductByNameandSize(name, sizeId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.findFirst({
+            where: {
+                name,
+                sizeId
+            }
+        });
+    });
+}
+;
 function create(data) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(data);
@@ -74,12 +85,28 @@ function deleteProduct(productId) {
         });
     });
 }
+function updateProduct(productId, quantity) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.update({
+            where: {
+                id: productId
+            },
+            data: {
+                quantity: {
+                    increment: quantity
+                }
+            }
+        });
+    });
+}
 const objProductRepositories = {
     findProducts,
     findOneProductById,
     findOneProductByName,
+    findOneProductByNameandSize,
     create,
-    deleteProduct
+    deleteProduct,
+    updateProduct
 };
 export default objProductRepositories;
 //# sourceMappingURL=productRepository.js.map

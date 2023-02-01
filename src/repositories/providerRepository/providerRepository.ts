@@ -22,8 +22,7 @@ async function findProviderbyCnpj(data : string){
         where:{
             cnpj: data,
         }
-    })
-     
+    })   
 }
 
 async function create(data:Prisma.providerCreateManyInput) {

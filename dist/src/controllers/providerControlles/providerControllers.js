@@ -11,10 +11,11 @@ import providerServices from "../../services/providerServices/providerServices.j
 import httpStatus from "http-status";
 function getProviders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const { storesId } = req.body;
+        const { storesId } = req.params;
         console.log(storesId);
+        const storeId = Number(storesId);
         try {
-            const providers = yield providerServices.getProvidersServices(storesId);
+            const providers = yield providerServices.getProvidersServices(storeId);
             res.status(httpStatus.OK).send(providers);
         }
         catch (error) {
@@ -52,11 +53,12 @@ function getProvidersbyName(req, res) {
 function postProvider(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { name, cnpj, email } = res.locals.provider;
-        const { storesId } = req.body;
+        const { storesId } = req.params;
         console.log(storesId);
+        const storeId = Number(storesId);
         try {
-            yield providerServices.createProvider(name, cnpj, email, storesId);
-            const providers = yield providerServices.getProvidersServices(storesId);
+            yield providerServices.createProvider(name, cnpj, email, storeId);
+            const providers = yield providerServices.getProvidersServices(storeId);
             return res.status(httpStatus.CREATED).send(providers);
         }
         catch (error) {

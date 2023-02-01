@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 function entriesMiddleware (req:Request, res:Response, next:NextFunction){
     let { name, quantity, fiscalNote, provider, receiveDate, size } = req.body;
+    
     const validation = entriesSchema.validate({
       name,
       quantity,

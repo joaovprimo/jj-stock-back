@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+/*import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 const prisma = new PrismaClient();
 import { faker } from '@faker-js/faker';
@@ -106,3 +106,4 @@ main()
       .finally(async()=>{
         await prisma.$disconnect();
       });
+      */

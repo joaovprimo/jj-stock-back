@@ -67,7 +67,7 @@ model provider {
 model sell {
   id        Int      @id @default(autoincrement())
   number    Int      @default(autoincrement())
-  productId Int      @default(autoincrement())
+  productId Int      
   date      String
   quantity  Int
   value     Int?
