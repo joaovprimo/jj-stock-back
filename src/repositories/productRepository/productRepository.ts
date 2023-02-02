@@ -26,6 +26,29 @@ async function findProducts(stockId:number){
     });
 }
 
+async function findProductsMin(stockId:number){
+    return prisma.products.findMany({
+        where:{
+            stockId,
+           NOT: {
+            quantity : 0
+           }
+        },
+        include:{
+            provider:{
+                select:{
+                    name:true
+                }
+            },
+            size:{
+                select:{
+                    name:true
+                }
+            }
+        }
+    });
+}
+
 async function findOneProductById(id:number) {
     return prisma.products.findFirst({
         where:{
@@ -99,7 +122,8 @@ const objProductRepositories = {
     findOneProductByNameandSize,
     create,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    findProductsMin
 }
 
 export default objProductRepositories;
