@@ -31,12 +31,14 @@ async function getProductsById(req:Request, res:Response){
     }
 }
 
-async function getProductsByName(req:Request, res:Response){
-    console.log("aqui");
-    const {name}  = req.body;
-    console.log(name);
+async function getProductsByNumberRef(req:Request, res:Response){
+    const {stock} = req.params;
+    const {numberref}  = req.query;
+    console.log(numberref);
+    const number = numberref.toString();
+    const stockId = Number(stock)
     try{
-        const product = await objProductService.getProductByNameService(name);
+        const product = await objProductService.getProductByNumberService(number, stockId);
         return res.status(httpStatus.OK).send(product);
     }catch(error){
         if (error.name === "NotFoundError") {
@@ -79,4 +81,4 @@ async function deleteProduct(req:Request, res:Response){
 }
 
 
-export { getProducts, getProductsById, getProductsByName, createProduct, deleteProduct }
+export { getProducts, getProductsById, getProductsByNumberRef, createProduct, deleteProduct }

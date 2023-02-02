@@ -1,5 +1,4 @@
 import prisma from '../../config/database.js';
-import { Prisma } from '@prisma/client';
 
 async function findProducts(stockId:number){
     return prisma.products.findMany({
@@ -57,10 +56,28 @@ async function findOneProductById(id:number) {
     })
 };
 
-async function findOneProductByName(name:string) {
+async function findOneProductByNumber(number:string, stockId:number) {
     return prisma.products.findMany({
         where:{
-           name
+           stockId,
+           numberRef:number
+        },
+        include:{
+            fiscalNote:{
+                select:{
+                   number:true 
+                }
+            },
+            provider:{
+                select:{
+                    name:true
+                }
+            },
+            size:{
+                select:{
+                    name:true
+                }
+            }
         }
     })
 };
@@ -115,15 +132,30 @@ async function updateProduct(productId:number, quantity: number) {
     })
 }
 
+async function updateSellProduct(productId:number, quantity: number) {
+    console.log(productId, quantity)
+    return prisma.products.update({
+        where:{
+            id:productId
+        },
+        data:{
+            quantity:{
+                decrement:quantity
+            } 
+        }
+    })
+}
+
 const objProductRepositories = {
     findProducts,
     findOneProductById,
-    findOneProductByName,
+    findOneProductByNumber,
     findOneProductByNameandSize,
     create,
     deleteProduct,
     updateProduct,
-    findProductsMin
+    findProductsMin,
+    updateSellProduct
 }
 
 export default objProductRepositories;

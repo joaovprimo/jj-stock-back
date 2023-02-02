@@ -1,4 +1,3 @@
-import { notFoundError, } from "../../errors/not-foud-error.js";
 import { badRequestError } from "../../errors/bad-request-error.js";
 import entryRepositoryFunctions from "../../repositories/entryRepository/entryRepository.js";
 import fiscalNoteRepositoryFunctions from "../../repositories/fiscalNoteRepository/fiscalNoteRepository.js";

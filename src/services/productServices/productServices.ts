@@ -3,7 +3,6 @@ import { notFoundError, } from "../../errors/not-foud-error.js";
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
 import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
 import sizeRepositoryFunctions from "../../repositories/sizeRepository/sizeRepository.js";
-import { Prisma } from '@prisma/client';
 
 async function getProductService(stockId:number) {
     const products = await objProductRepositories.findProducts(stockId);
@@ -16,8 +15,8 @@ async function getProductByIdService(id:number) {
     return product;
 }
 
-async function getProductByNameService(name:string){
-    const product = await objProductRepositories.findOneProductByName(name);
+async function getProductByNumberService(number: string, stockId:number){
+    const product = await objProductRepositories.findOneProductByNumber(number, stockId);
     if(!product) throw notFoundError();
     return product;
 }
@@ -44,7 +43,7 @@ async function deleteProductService(productId:number){
 const objProductService ={
     getProductService,
     getProductByIdService,
-    getProductByNameService,
+    getProductByNumberService,
     postProductService,
     deleteProductService,
 };

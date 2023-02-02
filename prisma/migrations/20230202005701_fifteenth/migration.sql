@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "sell" ALTER COLUMN "value" SET DATA TYPE TEXT;

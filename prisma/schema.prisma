@@ -70,7 +70,7 @@ model sell {
   productId Int      
   date      String
   quantity  Int
-  value     Int?
+  value     String?
   createdAt DateTime @default(now()) @db.Timestamp(6)
   updatedAt DateTime @default(now()) @db.Timestamp(6)
   products  products @relation(fields: [productId], references: [id], onDelete: NoAction, onUpdate: NoAction)
