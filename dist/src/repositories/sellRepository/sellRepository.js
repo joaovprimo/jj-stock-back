@@ -8,27 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import prisma from '../../config/database.js';
-function findSize(size) {
+function createSell(productId, sellDate, quantity, value) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.findFirst({
-            where: {
-                name: size
-            }
-        });
-    });
-}
-function create(size) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.create({
+        return prisma.sell.create({
             data: {
-                name: size
+                productId,
+                date: sellDate,
+                quantity,
+                value
             }
         });
     });
 }
-const sizeRepositoryFunctions = {
-    findSize,
-    create
+const sellFunctionsRepository = {
+    createSell
 };
-export default sizeRepositoryFunctions;
-//# sourceMappingURL=sizeRepository.js.map
+export default sellFunctionsRepository;
+//# sourceMappingURL=sellRepository.js.map

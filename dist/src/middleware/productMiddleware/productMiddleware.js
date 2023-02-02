@@ -1,8 +1,8 @@
 import { productSchema } from "../../schemas/productSchema/productSchema.js";
 function productMiddleware(req, res, next) {
-    let { name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color } = req.body;
+    let { name, numberRef, size, provider, description, minimun, color } = req.body;
     const validation = productSchema.validate({
-        name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color
+        name, numberRef, size, provider, description, minimun, color
     }, { abortEarly: false });
     if (validation.error) {
         const errors = validation.error.details.map(det => det.message);
@@ -10,7 +10,7 @@ function productMiddleware(req, res, next) {
         return res.status(400).send(errors);
     }
     ;
-    res.locals.product = { name, numberRef, sizeId, providerId, fiscalNoteId, stockId, quantity, description, minimun, color };
+    res.locals.product = { name, numberRef, size, provider, description, minimun, color };
     next();
 }
 ;

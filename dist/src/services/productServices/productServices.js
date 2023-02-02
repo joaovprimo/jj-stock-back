@@ -10,6 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { badRequestError } from "../../errors/bad-request-error.js";
 import { notFoundError, } from "../../errors/not-foud-error.js";
 import objProductRepositories from "../../repositories/productRepository/productRepository.js";
+import providersRepositories from "../../repositories/providerRepository/providerRepository.js";
+import sizeRepositoryFunctions from "../../repositories/sizeRepository/sizeRepository.js";
 function getProductService(stockId) {
     return __awaiter(this, void 0, void 0, function* () {
         const products = yield objProductRepositories.findProducts(stockId);
@@ -24,17 +26,25 @@ function getProductByIdService(id) {
         return product;
     });
 }
-function getProductByNameService(name) {
+function getProductByNumberService(number, stockId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const product = yield objProductRepositories.findOneProductByName(name);
+        const product = yield objProductRepositories.findOneProductByNumber(number, stockId);
         if (!product)
             throw notFoundError();
         return product;
     });
 }
-function postProductService(data) {
+function postProductService(name, numberRef, size, provider, description, minimun, color, stockId) {
     return __awaiter(this, void 0, void 0, function* () {
-        const product = yield objProductRepositories.create(data);
+        const min = Number(minimun);
+        const provi = yield providersRepositories.findProviderbyCnpj(provider);
+        if (!provi)
+            throw badRequestError();
+        const siz = yield sizeRepositoryFunctions.findSize(size.toUpperCase());
+        if (!siz) {
+            yield sizeRepositoryFunctions.create(size.toUpperCase());
+        }
+        const product = yield objProductRepositories.create(name, numberRef, siz.id, provi.id, description, min, color.toUpperCase(), stockId);
         console.log(product);
         if (!product)
             throw badRequestError();
@@ -52,7 +62,7 @@ function deleteProductService(productId) {
 const objProductService = {
     getProductService,
     getProductByIdService,
-    getProductByNameService,
+    getProductByNumberService,
     postProductService,
     deleteProductService,
 };

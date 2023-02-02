@@ -42,13 +42,15 @@ function getProductsById(req, res) {
         }
     });
 }
-function getProductsByName(req, res) {
+function getProductsByNumberRef(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log("aqui");
-        const { name } = req.body;
-        console.log(name);
+        const { stock } = req.params;
+        const { numberref } = req.query;
+        console.log(numberref);
+        const number = numberref.toString();
+        const stockId = Number(stock);
         try {
-            const product = yield objProductService.getProductByNameService(name);
+            const product = yield objProductService.getProductByNumberService(number, stockId);
             return res.status(httpStatus.OK).send(product);
         }
         catch (error) {
@@ -61,11 +63,12 @@ function getProductsByName(req, res) {
 }
 function createProduct(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const data = res.locals.product;
-        const { stockId } = req.body;
+        const { name, numberRef, size, provider, description, minimun, color } = res.locals.product;
+        const { stockId } = req.params;
+        const stockIdd = Number(stockId);
         try {
-            yield objProductService.postProductService(data);
-            const products = yield objProductService.getProductService(stockId);
+            yield objProductService.postProductService(name, numberRef, size, provider, description, minimun, color, stockIdd);
+            const products = yield objProductService.getProductService(stockIdd);
             return res.status(httpStatus.CREATED).send(products);
         }
         catch (error) {
@@ -94,5 +97,5 @@ function deleteProduct(req, res) {
         }
     });
 }
-export { getProducts, getProductsById, getProductsByName, createProduct, deleteProduct };
+export { getProducts, getProductsById, getProductsByNumberRef, createProduct, deleteProduct };
 //# sourceMappingURL=productController.js.map

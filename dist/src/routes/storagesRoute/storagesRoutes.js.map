@@ -1,0 +1,1 @@
+{"version":3,"file":"storagesRoutes.js","sourceRoot":"","sources":["../../../../src/routes/storagesRoute/storagesRoutes.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AACjC,OAAO,EAAE,kBAAkB,EAAE,MAAM,4DAA4D,CAAC;AAEhG,MAAM,YAAY,GAAG,MAAM,EAAE,CAAC;AAE9B,YAAY,CAAC,GAAG,CAAC,WAAW,EAAE,kBAAkB,CAAC,CAAC;AAElD,eAAe,YAAY,CAAC"}

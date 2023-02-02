@@ -34,6 +34,30 @@ function findProducts(stockId) {
         });
     });
 }
+function findProductsMin(stockId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return prisma.products.findMany({
+            where: {
+                stockId,
+                NOT: {
+                    quantity: 0
+                }
+            },
+            include: {
+                provider: {
+                    select: {
+                        name: true
+                    }
+                },
+                size: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        });
+    });
+}
 function findOneProductById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         return prisma.products.findFirst({
@@ -44,11 +68,29 @@ function findOneProductById(id) {
     });
 }
 ;
-function findOneProductByName(name) {
+function findOneProductByNumber(number, stockId) {
     return __awaiter(this, void 0, void 0, function* () {
         return prisma.products.findMany({
             where: {
-                name
+                stockId,
+                numberRef: number
+            },
+            include: {
+                fiscalNote: {
+                    select: {
+                        number: true
+                    }
+                },
+                provider: {
+                    select: {
+                        name: true
+                    }
+                },
+                size: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         });
     });
@@ -66,11 +108,22 @@ function findOneProductByNameandSize(name, sizeId, stock) {
     });
 }
 ;
-function create(data) {
+function create(name, numberRef, sizeId, providerId, description, minimun, color, stockId) {
     return __awaiter(this, void 0, void 0, function* () {
+        console.log(name, numberRef, sizeId, providerId, description, minimun, color, stockId);
         const creatind = yield prisma.products.create({
-            data
+            data: {
+                name,
+                numberRef,
+                sizeId,
+                providerId,
+                description,
+                stockId,
+                minimun,
+                color
+            }
         });
+        console.log(creatind);
         return creatind;
     });
 }
@@ -99,14 +152,31 @@ function updateProduct(productId, quantity) {
         });
     });
 }
+function updateSellProduct(productId, quantity) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log(productId, quantity);
+        return prisma.products.update({
+            where: {
+                id: productId
+            },
+            data: {
+                quantity: {
+                    decrement: quantity
+                }
+            }
+        });
+    });
+}
 const objProductRepositories = {
     findProducts,
     findOneProductById,
-    findOneProductByName,
+    findOneProductByNumber,
     findOneProductByNameandSize,
     create,
     deleteProduct,
-    updateProduct
+    updateProduct,
+    findProductsMin,
+    updateSellProduct
 };
 export default objProductRepositories;
 //# sourceMappingURL=productRepository.js.map

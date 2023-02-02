@@ -8,27 +8,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import prisma from '../../config/database.js';
-function findSize(size) {
+function getStorage(stockId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.findFirst({
+        return prisma.stock.findFirst({
             where: {
-                name: size
+                id: stockId
             }
         });
     });
 }
-function create(size) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.create({
-            data: {
-                name: size
-            }
-        });
-    });
-}
-const sizeRepositoryFunctions = {
-    findSize,
-    create
+;
+const storageRepositoryFuncions = {
+    getStorage
 };
-export default sizeRepositoryFunctions;
-//# sourceMappingURL=sizeRepository.js.map
+export default storageRepositoryFuncions;
+//# sourceMappingURL=storageRepository.js.map

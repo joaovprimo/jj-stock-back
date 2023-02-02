@@ -7,28 +7,24 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import prisma from '../../config/database.js';
-function findSize(size) {
+import httpStatus from "http-status";
+import storageServicesFunctions from "../../services/storageServices/storageServices.js";
+function getInfoFromStorage(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.findFirst({
-            where: {
-                name: size
+        const { stockId } = req.params;
+        const stock = Number(stockId);
+        try {
+            console.log("aqui");
+            const products = yield storageServicesFunctions.getInfoFromStorageService(stock);
+            return res.status(httpStatus.OK).send(products);
+        }
+        catch (error) {
+            if (error.name === "NotFoundError") {
+                return res.sendStatus(httpStatus.NOT_FOUND);
             }
-        });
+            return res.sendStatus(httpStatus.BAD_REQUEST);
+        }
     });
 }
-function create(size) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return prisma.size.create({
-            data: {
-                name: size
-            }
-        });
-    });
-}
-const sizeRepositoryFunctions = {
-    findSize,
-    create
-};
-export default sizeRepositoryFunctions;
-//# sourceMappingURL=sizeRepository.js.map
+export { getInfoFromStorage };
+//# sourceMappingURL=storageControllers.js.map
