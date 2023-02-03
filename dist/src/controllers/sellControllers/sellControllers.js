@@ -28,5 +28,9 @@ function postSell(req, res) {
         }
     });
 }
-export { postSell };
+function getSell(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+    });
+}
+export { postSell, getSell };
 //# sourceMappingURL=sellControllers.js.map

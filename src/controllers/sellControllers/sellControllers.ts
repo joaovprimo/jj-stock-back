@@ -19,4 +19,8 @@ async function postSell(req:Request, res:Response){
     }
 }
 
-export { postSell};
+async function getSell(req:Request, res:Response){
+
+}
+
+export { postSell, getSell};

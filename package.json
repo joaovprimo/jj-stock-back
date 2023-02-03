@@ -14,7 +14,8 @@
     "build": "tsup src",
     "seed": "npx prisma db seed",
     "migrate": "npx prisma migrate dev",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "node:16.14.0": "nvm use v14=6.14.0"
   },
   "keywords": [],
   "author": "",
